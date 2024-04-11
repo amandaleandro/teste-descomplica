@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob-descomplica
+  namespace: descomplica-class
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: descomplica-job
+            image: busybox
+            args:
+            - /bin/sh
+            - -c
+            - date; echo Olá Bruno! Até mais!
+          restartPolicy: OnFailure
