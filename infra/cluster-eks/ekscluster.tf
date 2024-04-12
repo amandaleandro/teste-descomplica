@@ -114,3 +114,40 @@ module "eks" {
     Autor       = "Amanda Leandro Soares"
   }
 }
+module "prometheus" {
+  source  = "cloudposse/prometheus/aws"
+  version = "0.12.0"
+
+  namespace = "cp"
+  stage     = "prod"
+  name      = "app"
+
+  vpc_id     = aws_vpc.main.id
+  subnet_ids = aws_subnet.main.*.id
+}
+
+module "grafana" {
+  source  = "cloudposse/grafana/aws"
+  version = "0.12.0"
+
+  namespace = "cp"
+  stage     = "prod"
+  name      = "app"
+
+  vpc_id     = aws_vpc.main.id
+  subnet_ids = aws_subnet.main.*.id
+
+  security_groups = [module.prometheus.security_group_id]
+
+  grafana_admin_user     = "admin"
+  grafana_admin_password = "password"
+
+  grafana_image_url = "grafana/grafana:7.3.5"
+
+  grafana_provisioning_configmaps = [
+    {
+      configmap_namespace = kubernetes_namespace.grafana.metadata[0].name
+      configmap_name      = kubernetes_config_map.grafana_provisioning.name
+    }
+  ]
+}
