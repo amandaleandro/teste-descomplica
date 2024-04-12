@@ -90,22 +90,22 @@ module "eks" {
 
   aws_auth_roles = [
     {
-      rolearn  = "arn:aws:iam::66666666666:role/role1"
-      username = "role1"
+      rolearn  = "arn:aws:iam::905418318810:role/my-cluster-cluster-20240411050758315500000001"
+      username = "mycluster-cluster-20240411050758315500000001"
       groups   = ["system:masters"]
     },
   ]
 
   aws_auth_users = [
     {
-      userarn  = "arn:aws:iam::account-id:user/user-id"
-      username = "user1"
+      userarn  = "arn:aws:iam::905418318810:user/testeamanda"
+      username = "testeamanda"
       groups   = ["system:masters"]
     },
   ]
 
   aws_auth_accounts = [
-    "account-id",
+    "905418318810",
   ]
 
   tags = {
